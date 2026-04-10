@@ -107,8 +107,8 @@
     }
 
     /* ── Calendar ── */
-    #calendar-view { display: block; }
-    #list-view     { display: none; }
+    #calendar-view { display: none; }
+    #list-view     { display: block; }
 
     #calendar {
       background: #fff;
@@ -332,8 +332,8 @@
     <span>新竹 &amp; 全台灣 · <span id="last-updated">載入中…</span></span>
   </h1>
   <div class="view-toggle">
-    <button id="btn-calendar" class="active" onclick="switchView('calendar')">月曆視圖</button>
-    <button id="btn-list"     onclick="switchView('list')">列表視圖</button>
+    <button id="btn-calendar" onclick="switchView('calendar')">月曆視圖</button>
+    <button id="btn-list" class="active" onclick="switchView('list')">列表視圖</button>
   </div>
 </header>
 
