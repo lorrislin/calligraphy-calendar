@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2024-05-24 15:30",
+  "lastUpdated": "2026-04-10 23:22",
   "notes": "資料來源：各主辦單位公告、vocus.cc 懶人包、花蓮縣教育處、新竹縣文化局等。日期以主辦單位最新公告為準。",
   "competitions": [
     {
@@ -70,7 +70,8 @@
       "id": "jinhong-29",
       "title": "第廿九屆【金鴻獎】全國書法比賽",
       "start": "2026-07-12",
-      "deadline": "2026-05-31",
+      "deadline": "2026-05-14",
+      "signupStart": "2026-05-01",
       "location": "待公告",
       "organizer": "財團法人金鴻兒童文教基金會",
       "category": "national",
@@ -78,7 +79,7 @@
       "ageGroup": "兒童至社會組",
       "fee": "待公告",
       "url": "https://www.happynet.org.tw/",
-      "description": "金鴻兒童文教基金會每年舉辦之全國書法比賽，為知名賽事。往屆優勝作品曾在國父紀念館展出。詳見官網公告。",
+      "description": "初賽作品收件日期：115年5月1日至5月14日止。金鴻兒童文教基金會每年舉辦之全國書法比賽，為知名賽事。",
       "tbd": false,
       "estimated": true
     },

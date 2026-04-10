@@ -518,7 +518,7 @@
     const estimatedBadge = item.estimated
       ? `<span class="badge" style="background:#f39c12;color:#fff">預估</span>` : '';
     return `
-      <div class="list-item cat-${item.category}${isTbd ? ' tbd' : ''}" onclick="openModal(${escapeJson(item)})">
+      <div class="list-item cat-${item.category}${isTbd ? ' tbd' : ''}" onclick="openModal('${item.id}')">
         ${dateBox}
         <div class="list-info">
           <h3>${item.title}
@@ -531,15 +531,13 @@
             <span>📍 ${item.location}</span>
             <span>⏰ 截止 ${item.deadline}</span>
             <span>👥 ${item.ageGroup}</span>
+            ${item.url ? `<span><a href="${item.url}" target="_blank" rel="noopener" style="color: #7a3b00; font-weight: bold;" onclick="event.stopPropagation()">🔗 官方連結</a></span>` : ''}
           </div>
         </div>
       </div>
     `;
   }
 
-  function escapeJson(obj) {
-    return "'" + JSON.stringify(obj).replace(/'/g, "\\'") + "'";
-  }
 
   // ── Tooltip ──
   const tooltip = document.getElementById('tooltip');
@@ -572,7 +570,10 @@
 
   // ── Modal ──
   function openModal(item) {
-    if (typeof item === 'string') item = JSON.parse(item);
+    if (typeof item === 'string') {
+      const found = allData.find(d => d.id === item);
+      item = found || JSON.parse(item);
+    }
     hideTooltip();
 
     const color = CATEGORY_COLORS[item.category] || '#555';
