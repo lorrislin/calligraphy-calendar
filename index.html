@@ -382,24 +382,37 @@
   let calendarInstance = null;
 
   // ── Load Data ──
-  fetch('data/competitions.json?t=' + Date.now())
-    .then(r => r.json())
-    .then(data => {
-      // Support both new format {lastUpdated, competitions:[]} and old array format
-      if (Array.isArray(data)) {
-        allData = data;
-        document.getElementById('last-updated').textContent = '';
-      } else {
-        allData = data.competitions || [];
-        document.getElementById('last-updated').textContent =
-          '最後更新：' + (data.lastUpdated || '未知');
+  fetch('data/competitions.json?v=' + Date.now()) // Use cache-busting param
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok: ' + response.statusText);
       }
+      // Get the last-modified date from the response header
+      const lastModifiedHeader = response.headers.get('Last-Modified');
+      if (lastModifiedHeader) {
+        const lastModifiedDate = new Date(lastModifiedHeader);
+        // Format to YYYY-MM-DD HH:mm in Taiwan's timezone for consistency
+        const options = {
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', hour12: false,
+          timeZone: 'Asia/Taipei'
+        };
+        const formattedDate = new Intl.DateTimeFormat('sv-SE', options).format(lastModifiedDate).replace('T', ' ');
+        document.getElementById('last-updated').textContent = '資料更新：' + formattedDate;
+      }
+      return response.json(); // Pass the JSON promise down the chain
+    })
+    .then(data => {
+      // Handle both object {competitions: []} and raw array formats
+      allData = data.competitions || (Array.isArray(data) ? data : []);
       initCalendar();
       renderList();
     })
-    .catch(() => {
-      document.getElementById('calendar').innerHTML =
-        '<div class="empty-state">無法載入資料，請確認 data/competitions.json 是否存在。</div>';
+    .catch(error => {
+      console.error('Error loading competition data:', error);
+      document.getElementById('list-container').innerHTML =
+        '<div class="empty-state">無法載入比賽資料，請稍後再試。</div>';
+      document.getElementById('last-updated').textContent = '資料載入失敗';
     });
 
   // ── Filter ──
