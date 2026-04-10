@@ -21,12 +21,11 @@
 
     /* ── Header ── */
     header {
-      background-color: #f8f5ee; /* 更具真實感的宣紙米白 */
+      background-color: #f4f1ea; /* 更古樸的宣紙底色 */
       background-image: 
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E"), /* SVG 宣紙纖維雜訊紋理 */
-        radial-gradient(ellipse at 10% 20%, rgba(20, 20, 20, 0.08) 0%, transparent 40%), /* 左上角較深的水墨暈染 */
-        radial-gradient(circle at 90% 80%, rgba(40, 45, 50, 0.04) 0%, transparent 50%), /* 右下角微弱墨暈 */
-        linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,235,220,0.5) 100%); /* 紙張整體光澤 */
+        url("https://www.transparenttextures.com/patterns/rice-paper.png"), /* 真實的宣紙纖維無縫圖檔 */
+        radial-gradient(ellipse at 15% 30%, rgba(20, 20, 20, 0.12) 0%, transparent 50%), /* 左上角水墨暈染 */
+        radial-gradient(circle at 85% 80%, rgba(40, 45, 50, 0.06) 0%, transparent 50%); /* 右下角微弱墨暈 */
       color: #1a1a1a;
       padding: 20px 32px;
       display: flex;
@@ -37,7 +36,9 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* 配合淺色背景調弱陰影 */
     }
     header h1 {
-      font-size: 1.6rem;
+      font-family: "Kaiti TC", "BiauKai", "標楷體", "STKaiti", serif; /* 換成毛筆/楷書字體 */
+      font-size: 1.8rem;
+      font-weight: bold;
       letter-spacing: 0.1em;
     }
     header h1 span {
@@ -45,6 +46,7 @@
       opacity: 0.75;
       display: block;
       letter-spacing: 0.05em;
+      font-family: "Noto Serif TC", "思源宋體", serif; /* 副標題切換回一般宋體以維持清晰度 */
       margin-top: 2px;
     }
 
