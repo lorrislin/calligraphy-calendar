@@ -21,11 +21,12 @@
 
     /* ── Header ── */
     header {
-      background: #fdfcf8; /* 偏暖的宣紙白 */
+      background-color: #f8f5ee; /* 更具真實感的宣紙米白 */
       background-image: 
-        radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.06) 0%, transparent 40%), /* 左上角淡淡墨暈 */
-        radial-gradient(circle at 90% 80%, rgba(30, 40, 50, 0.04) 0%, transparent 50%), /* 右下角微弱墨暈 */
-        linear-gradient(135deg, #ffffff 0%, #f4f1eb 100%); /* 紙張本身的細微光澤過渡 */
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E"), /* SVG 宣紙纖維雜訊紋理 */
+        radial-gradient(ellipse at 10% 20%, rgba(20, 20, 20, 0.08) 0%, transparent 40%), /* 左上角較深的水墨暈染 */
+        radial-gradient(circle at 90% 80%, rgba(40, 45, 50, 0.04) 0%, transparent 50%), /* 右下角微弱墨暈 */
+        linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,235,220,0.5) 100%); /* 紙張整體光澤 */
       color: #1a1a1a;
       padding: 20px 32px;
       display: flex;
