@@ -14,15 +14,15 @@
 
     body {
       font-family: "Noto Serif TC", "思源宋體", serif;
-      background: #fdf6ec;
-      color: #2c1a0e;
+      background: #f5f5f5;
+      color: #1a1a1a;
       min-height: 100vh;
     }
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, #3d1a00, #7a3b00);
-      color: #fdf6ec;
+      background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+      color: #ffffff;
       padding: 20px 32px;
       display: flex;
       align-items: center;
@@ -50,10 +50,10 @@
     }
     .view-toggle button {
       padding: 7px 18px;
-      border: 2px solid #fdf6ec;
+      border: 2px solid #ffffff;
       border-radius: 20px;
       background: transparent;
-      color: #fdf6ec;
+      color: #ffffff;
       font-family: inherit;
       font-size: 0.9rem;
       cursor: pointer;
@@ -61,22 +61,22 @@
     }
     .view-toggle button.active,
     .view-toggle button:hover {
-      background: #fdf6ec;
-      color: #3d1a00;
+      background: #ffffff;
+      color: #1e1e1e;
       font-weight: bold;
     }
 
     /* ── Filter Bar ── */
     .filter-bar {
-      background: #fff8f0;
-      border-bottom: 1px solid #e8d5b7;
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
       padding: 10px 32px;
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
     }
-    .filter-bar span { font-size: 0.85rem; color: #6b4226; }
+    .filter-bar span { font-size: 0.85rem; color: #333333; }
     .filter-btn {
       padding: 4px 14px;
       border-radius: 14px;
@@ -86,7 +86,7 @@
       font-family: inherit;
       transition: all 0.2s;
     }
-    .filter-btn[data-cat="all"]      { border-color: #7a3b00; color: #7a3b00; background: #fff; }
+    .filter-btn[data-cat="all"]      { border-color: #333333; color: #333333; background: #fff; }
     .filter-btn[data-cat="hsinchu"]  { border-color: #c0392b; color: #c0392b; background: #fff; }
     .filter-btn[data-cat="regional"] { border-color: #d35400; color: #d35400; background: #fff; }
     .filter-btn[data-cat="national"] { border-color: #1a5276; color: #1a5276; background: #fff; }
@@ -94,7 +94,7 @@
     .filter-btn:hover {
       filter: brightness(0.92);
     }
-    .filter-btn[data-cat="all"].active      { background: #7a3b00; color: #fff; }
+    .filter-btn[data-cat="all"].active      { background: #333333; color: #fff; }
     .filter-btn[data-cat="hsinchu"].active  { background: #c0392b; color: #fff; }
     .filter-btn[data-cat="regional"].active { background: #d35400; color: #fff; }
     .filter-btn[data-cat="national"].active { background: #1a5276; color: #fff; }
@@ -118,18 +118,18 @@
     }
 
     /* FullCalendar overrides */
-    .fc .fc-toolbar-title { font-size: 1.2rem; color: #3d1a00; }
+    .fc .fc-toolbar-title { font-size: 1.2rem; color: #1a1a1a; }
     .fc .fc-button-primary {
-      background: #7a3b00 !important;
-      border-color: #7a3b00 !important;
+      background: #4a4a4a !important;
+      border-color: #4a4a4a !important;
     }
     .fc .fc-button-primary:hover {
-      background: #5a2b00 !important;
-      border-color: #5a2b00 !important;
+      background: #333333 !important;
+      border-color: #333333 !important;
     }
     .fc .fc-button-primary:not(:disabled).fc-button-active {
-      background: #3d1a00 !important;
-      border-color: #3d1a00 !important;
+      background: #1a1a1a !important;
+      border-color: #1a1a1a !important;
     }
     .fc-event {
       cursor: pointer;
@@ -144,8 +144,8 @@
     .list-section { margin-bottom: 28px; }
     .list-month-title {
       font-size: 1rem;
-      color: #6b4226;
-      border-left: 4px solid #7a3b00;
+      color: #333333;
+      border-left: 4px solid #333333;
       padding-left: 10px;
       margin-bottom: 12px;
       letter-spacing: 0.05em;
@@ -175,17 +175,17 @@
       font-size: 1.6rem;
       font-weight: bold;
       line-height: 1;
-      color: #3d1a00;
+      color: #1a1a1a;
     }
     .list-date-box .month {
       font-size: 0.75rem;
-      color: #888;
+      color: #555555;
     }
     .list-info { flex: 1; }
     .list-info h3 { font-size: 1rem; margin-bottom: 4px; }
     .list-meta {
       font-size: 0.8rem;
-      color: #888;
+      color: #555555;
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
@@ -270,17 +270,17 @@
       align-items: flex-start;
     }
     .modal-label {
-      color: #999;
+      color: #555555;
       min-width: 64px;
       flex-shrink: 0;
     }
-    .modal-value { color: #2c1a0e; }
+    .modal-value { color: #1a1a1a; }
     .modal-desc {
       margin-top: 12px;
       padding-top: 12px;
       border-top: 1px solid #eee;
       font-size: 0.86rem;
-      color: #555;
+      color: #333333;
       line-height: 1.7;
     }
     .deadline-badge {
@@ -296,8 +296,8 @@
     /* ── Tooltip (desktop hover) ── */
     .tooltip {
       position: fixed;
-      background: #3d1a00;
-      color: #fdf6ec;
+      background: #222222;
+      color: #ffffff;
       padding: 8px 12px;
       border-radius: 8px;
       font-size: 0.8rem;
@@ -491,7 +491,7 @@
 
     const tbdHtml = tbd.length === 0 ? '' : `
       <div class="list-section">
-        <div class="list-month-title" style="border-left-color:#999;color:#999">
+        <div class="list-month-title" style="border-left-color:#666;color:#666">
           ⏳ 日期待公告（${tbd.length} 場）
         </div>
         ${tbd.map(item => renderListItem(item, true)).join('')}
@@ -531,7 +531,7 @@
             <span>📍 ${item.location}</span>
             <span>⏰ 截止 ${item.deadline}</span>
             <span>👥 ${item.ageGroup}</span>
-            ${item.url ? `<span><a href="${item.url}" target="_blank" rel="noopener" style="color: #7a3b00; font-weight: bold;" onclick="event.stopPropagation()">🔗 官方連結</a></span>` : ''}
+            ${item.url ? `<span><a href="${item.url}" target="_blank" rel="noopener" style="color: #0056b3; font-weight: bold;" onclick="event.stopPropagation()">🔗 官方連結</a></span>` : ''}
           </div>
         </div>
       </div>
