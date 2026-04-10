@@ -213,6 +213,8 @@
     .list-item.cat-hsinchu  { border-left-color: #c0392b; }
     .list-item.cat-regional { border-left-color: #d35400; }
     .list-item.cat-national { border-left-color: #1a5276; }
+    .list-item.tbd { opacity: 0.75; background: #fafafa; }
+    .list-item.tbd:hover { opacity: 1; }
 
     /* ── Modal ── */
     .modal-overlay {
@@ -327,7 +329,7 @@
 
 <header>
   <h1>書法比賽行事曆
-    <span>新竹 &amp; 全台灣</span>
+    <span>新竹 &amp; 全台灣 · <span id="last-updated">載入中…</span></span>
   </h1>
   <div class="view-toggle">
     <button id="btn-calendar" class="active" onclick="switchView('calendar')">月曆視圖</button>
@@ -383,10 +385,18 @@
   let calendarInstance = null;
 
   // ── Load Data ──
-  fetch('data/competitions.json')
+  fetch('data/competitions.json?t=' + Date.now())
     .then(r => r.json())
     .then(data => {
-      allData = data;
+      // Support both new format {lastUpdated, competitions:[]} and old array format
+      if (Array.isArray(data)) {
+        allData = data;
+        document.getElementById('last-updated').textContent = '';
+      } else {
+        allData = data.competitions || [];
+        document.getElementById('last-updated').textContent =
+          '最後更新：' + (data.lastUpdated || '未知');
+      }
       initCalendar();
       renderList();
     })
@@ -403,7 +413,7 @@
     });
     if (calendarInstance) {
       calendarInstance.getEvents().forEach(e => e.remove());
-      filteredData().forEach(item => calendarInstance.addEvent(toFCEvent(item)));
+      filteredData().filter(i => !i.tbd).forEach(item => calendarInstance.addEvent(toFCEvent(item)));
     }
     renderList();
   }
@@ -435,7 +445,7 @@
         right: '',
       },
       height: 'auto',
-      events: filteredData().map(toFCEvent),
+      events: filteredData().filter(i => !i.tbd).map(toFCEvent),
       eventMouseEnter(info) {
         showTooltip(info.event.extendedProps, info.jsEvent);
       },
@@ -452,53 +462,79 @@
   // ── List View ──
   function renderList() {
     const container = document.getElementById('list-container');
-    const data = filteredData().sort((a, b) => a.start.localeCompare(b.start));
+    const data = filteredData();
+    const dated = data.filter(i => !i.tbd).sort((a, b) => a.start.localeCompare(b.start));
+    const tbd   = data.filter(i =>  i.tbd);
 
     if (data.length === 0) {
       container.innerHTML = '<div class="empty-state">目前沒有符合條件的比賽資料。</div>';
       return;
     }
 
-    // Group by month
+    // Group dated events by month
     const groups = {};
-    data.forEach(item => {
-      const key = item.start.slice(0, 7); // YYYY-MM
+    dated.forEach(item => {
+      const key = item.start.slice(0, 7);
       if (!groups[key]) groups[key] = [];
       groups[key].push(item);
     });
 
-    container.innerHTML = Object.entries(groups).map(([month, items]) => {
+    const datedHtml = Object.entries(groups).map(([month, items]) => {
       const [y, m] = month.split('-');
       return `
         <div class="list-section">
           <div class="list-month-title">${y} 年 ${parseInt(m)} 月</div>
-          ${items.map(item => {
-            const d = new Date(item.start + 'T00:00:00');
-            const weekDays = ['日','一','二','三','四','五','六'];
-            return `
-              <div class="list-item cat-${item.category}" onclick="openModal(${escapeJson(item)})">
-                <div class="list-date-box">
-                  <div class="day">${d.getDate()}</div>
-                  <div class="month">（${weekDays[d.getDay()]}）</div>
-                </div>
-                <div class="list-info">
-                  <h3>${item.title}
-                    <span class="badge cat-${item.category}" style="background:${CATEGORY_COLORS[item.category]};color:#fff">
-                      ${CATEGORY_LABELS[item.category] || item.category}
-                    </span>
-                  </h3>
-                  <div class="list-meta">
-                    <span>📍 ${item.location}</span>
-                    <span>⏰ 截止 ${item.deadline}</span>
-                    <span>👥 ${item.ageGroup}</span>
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('')}
+          ${items.map(item => renderListItem(item, false)).join('')}
         </div>
       `;
     }).join('');
+
+    const tbdHtml = tbd.length === 0 ? '' : `
+      <div class="list-section">
+        <div class="list-month-title" style="border-left-color:#999;color:#999">
+          ⏳ 日期待公告（${tbd.length} 場）
+        </div>
+        ${tbd.map(item => renderListItem(item, true)).join('')}
+      </div>
+    `;
+
+    container.innerHTML = datedHtml + tbdHtml ||
+      '<div class="empty-state">目前沒有符合條件的比賽資料。</div>';
+  }
+
+  function renderListItem(item, isTbd) {
+    const weekDays = ['日','一','二','三','四','五','六'];
+    let dateBox;
+    if (isTbd) {
+      dateBox = `<div class="list-date-box"><div class="day" style="font-size:1rem;color:#999">TBD</div></div>`;
+    } else {
+      const d = new Date(item.start + 'T00:00:00');
+      dateBox = `
+        <div class="list-date-box">
+          <div class="day">${d.getDate()}</div>
+          <div class="month">（${weekDays[d.getDay()]}）</div>
+        </div>`;
+    }
+    const estimatedBadge = item.estimated
+      ? `<span class="badge" style="background:#f39c12;color:#fff">預估</span>` : '';
+    return `
+      <div class="list-item cat-${item.category}${isTbd ? ' tbd' : ''}" onclick="openModal(${escapeJson(item)})">
+        ${dateBox}
+        <div class="list-info">
+          <h3>${item.title}
+            <span class="badge" style="background:${CATEGORY_COLORS[item.category]};color:#fff">
+              ${CATEGORY_LABELS[item.category] || item.category}
+            </span>
+            ${estimatedBadge}
+          </h3>
+          <div class="list-meta">
+            <span>📍 ${item.location}</span>
+            <span>⏰ 截止 ${item.deadline}</span>
+            <span>👥 ${item.ageGroup}</span>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   function escapeJson(obj) {
