@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-10",
+  "lastUpdated": "2024-05-24",
   "notes": "資料來源：各主辦單位公告、vocus.cc 懶人包、花蓮縣教育處、新竹縣文化局等。日期以主辦單位最新公告為準。",
   "competitions": [
     {
@@ -21,8 +21,8 @@
     {
       "id": "wenchao-2026",
       "title": "115年新竹縣翠竹書畫學會第五屆「文超盃」全國書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-10-25",
+      "deadline": "2026-09-30",
       "location": "新竹縣",
       "organizer": "新竹縣翠竹書畫學會",
       "category": "hsinchu",
@@ -31,7 +31,8 @@
       "fee": "待公告",
       "url": "https://vocus.cc/article/6888009dfd89780001601c10",
       "description": "由新竹縣翠竹書畫學會舉辦的全國性書法賽事。實際日期請以主辦單位公告為準。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "hsinchu-countycup",
@@ -52,8 +53,8 @@
     {
       "id": "gongcheng-12",
       "title": "第十二屆公誠盃全國書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-10-18",
+      "deadline": "2026-09-20",
       "location": "待公告",
       "organizer": "公誠盃主辦單位",
       "category": "national",
@@ -62,13 +63,14 @@
       "fee": "待公告",
       "url": "https://vocus.cc/article/6888009dfd89780001601c10",
       "description": "第十二屆公誠盃全國書法比賽實施計畫已發布，但具體日期尚未確認。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "jinhong-29",
       "title": "第廿九屆【金鴻獎】全國書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-07-12",
+      "deadline": "2026-05-31",
       "location": "待公告",
       "organizer": "財團法人金鴻兒童文教基金會",
       "category": "national",
@@ -77,13 +79,14 @@
       "fee": "待公告",
       "url": "https://www.happynet.org.tw/",
       "description": "金鴻兒童文教基金會每年舉辦之全國書法比賽，為知名賽事。往屆優勝作品曾在國父紀念館展出。詳見官網公告。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "shalianbao-20",
       "title": "第廿屆沙連堡盃全國書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-11-08",
+      "deadline": "2026-10-10",
       "location": "待公告",
       "organizer": "沙連堡主辦單位",
       "category": "national",
@@ -92,13 +95,14 @@
       "fee": "待公告",
       "url": "https://vocus.cc/article/6888009dfd89780001601c10",
       "description": "第廿屆沙連堡盃全國書法比賽，具體日期待主辦單位公告。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "ciguangshan-20",
       "title": "第廿屆「慈光山人文獎」全國書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-05-17",
+      "deadline": "2026-04-15",
       "location": "待公告",
       "organizer": "慈光山寺",
       "category": "national",
@@ -107,13 +111,14 @@
       "fee": "待公告",
       "url": "https://vocus.cc/article/6888009dfd89780001601c10",
       "description": "慈光山人文獎第廿屆全國書法比賽。具體日期待公告。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "changrong-8",
       "title": "2026 第八屆【長榮藝術獎】全國書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-04-12",
+      "deadline": "2026-03-08",
       "location": "待公告",
       "organizer": "長榮大學",
       "category": "national",
@@ -122,13 +127,14 @@
       "fee": "待公告",
       "url": "https://vocus.cc/article/6888009dfd89780001601c10",
       "description": "長榮藝術獎第八屆全國書法比賽。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "zhengda-17",
       "title": "115年雲林縣第17屆政大盃全國硬筆書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-05-24",
+      "deadline": "2026-04-30",
       "location": "雲林縣",
       "organizer": "雲林縣政大藝文學會",
       "category": "national",
@@ -137,13 +143,14 @@
       "fee": "待公告",
       "url": "https://vocus.cc/article/6888009dfd89780001601c10",
       "description": "政大盃全國硬筆書法比賽，第 17 屆。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "yuantai-15",
       "title": "第十五屆 元太道堂盃 全國書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-11-15",
+      "deadline": "2026-10-15",
       "location": "待公告",
       "organizer": "元太道堂",
       "category": "national",
@@ -152,13 +159,14 @@
       "fee": "待公告",
       "url": "https://activity.sa.ntnu.edu.tw/",
       "description": "元太道堂盃全國書法比賽第 15 屆，師大曾轉發相關競賽資訊。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "nsac-115",
       "title": "115學年度全國學生美術比賽（書法類）",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-11-14",
+      "deadline": "2026-10-20",
       "location": "各縣市初賽、全國決賽",
       "organizer": "教育部 / 國立臺灣藝術教育館",
       "category": "national",
@@ -167,13 +175,14 @@
       "fee": "免費",
       "url": "https://web.arte.gov.tw/nsac/",
       "description": "教育部主辦，每年例行之全國學生美術比賽，書法為固定類別之一。115 學年度預計 2026 年下半年開始收件，2027 年上半年決賽。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "nlc-115",
       "title": "115年全國語文競賽（寫字/書法項目）",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-11-28",
+      "deadline": "2026-10-31",
       "location": "各縣市初賽、全國決賽",
       "organizer": "教育部",
       "category": "national",
@@ -182,13 +191,14 @@
       "fee": "免費",
       "url": "https://nlc.moe.edu.tw/",
       "description": "教育部主辦之全國語文競賽，寫字（書法）為競賽項目之一。通常於每年 11-12 月舉行全國決賽。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     },
     {
       "id": "hanmo-6",
       "title": "2026 第六屆中華翰墨情書法比賽",
-      "start": "2026-12-31",
-      "deadline": "待公告",
+      "start": "2026-07-19",
+      "deadline": "2026-05-30",
       "location": "待公告",
       "organizer": "中華翰墨情書法學會",
       "category": "national",
@@ -197,7 +207,8 @@
       "fee": "待公告",
       "url": "https://www.shufa.org.tw/news",
       "description": "2026 年 4 月 9 日公告之第六屆中華翰墨情書法比賽。涵蓋兩岸四地臺灣賽區（台北、新北、台中、台南、高雄）。",
-      "tbd": true
+      "tbd": false,
+      "estimated": true
     }
   ]
 }
