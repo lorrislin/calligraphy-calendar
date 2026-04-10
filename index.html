@@ -21,15 +21,19 @@
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
-      color: #ffffff;
+      background: #fdfcf8; /* 偏暖的宣紙白 */
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.06) 0%, transparent 40%), /* 左上角淡淡墨暈 */
+        radial-gradient(circle at 90% 80%, rgba(30, 40, 50, 0.04) 0%, transparent 50%), /* 右下角微弱墨暈 */
+        linear-gradient(135deg, #ffffff 0%, #f4f1eb 100%); /* 紙張本身的細微光澤過渡 */
+      color: #1a1a1a;
       padding: 20px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* 配合淺色背景調弱陰影 */
     }
     header h1 {
       font-size: 1.6rem;
@@ -50,10 +54,10 @@
     }
     .view-toggle button {
       padding: 7px 18px;
-      border: 2px solid #ffffff;
+      border: 2px solid #333333; /* 按鈕邊框改為深色 */
       border-radius: 20px;
       background: transparent;
-      color: #ffffff;
+      color: #333333; /* 按鈕文字改為深色 */
       font-family: inherit;
       font-size: 0.9rem;
       cursor: pointer;
@@ -61,8 +65,8 @@
     }
     .view-toggle button.active,
     .view-toggle button:hover {
-      background: #ffffff;
-      color: #1e1e1e;
+      background: #333333; /* 滑鼠移入或啟動時背景變為墨色 */
+      color: #ffffff; /* 文字反白 */
       font-weight: bold;
     }
 
