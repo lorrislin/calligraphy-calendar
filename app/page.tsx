@@ -92,10 +92,10 @@ export default async function Home() {
   }
 
   return (
-    <div className="container" style={{ padding: '32px 24px' }}>
+    <div className="container" style={{ padding: '24px' }}>
 
       {/* Filters (Minimal Modern UI) */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', justifyContent: 'flex-end', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', justifyContent: 'flex-end', alignItems: 'center' }}>
         <span style={{ fontSize: '0.8rem', color: '#888', marginRight: '4px' }}>分類篩選：</span>
         <button style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: '4px', border: 'none', background: '#333', color: '#fff', cursor: 'pointer' }}>全部</button>
         <button style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #eee', background: 'transparent', color: '#666', cursor: 'pointer' }}>全國賽</button>
@@ -103,19 +103,20 @@ export default async function Home() {
       </div>
 
       {/* List Layout */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {Object.keys(groupedCompetitions).length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>尚無可顯示的比賽</p>
         ) : (
           Object.entries(groupedCompetitions).map(([monthYear, comps]) => (
-            <div key={monthYear} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div key={monthYear} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <h2 style={{ 
-                fontSize: '1.1rem', 
+                fontSize: '1rem', 
                 color: '#333', 
                 borderLeft: '4px solid #333', 
-                paddingLeft: '12px', 
-                marginBottom: '4px',
-                marginTop: '12px' 
+                paddingLeft: '10px', 
+                marginBottom: '2px',
+                marginTop: '8px',
+                fontWeight: 'bold'
               }}>
                 {monthYear}
               </h2>
@@ -135,10 +136,10 @@ export default async function Home() {
                       <div style={{ 
                         display: 'flex', 
                         alignItems: 'center', 
-                        margin: '12px 0', 
+                        margin: '8px 0 4px 0', 
                         color: '#c0392b', 
                         fontWeight: 'bold',
-                        fontSize: '0.9rem' 
+                        fontSize: '0.8rem' 
                       }}>
                         <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #c0392b)' }}></div>
                         <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -151,41 +152,41 @@ export default async function Home() {
                     )}
                     <div className="competition-card" style={{
                       background: '#fff',
-                      borderRadius: '8px',
-                      padding: '12px 20px',
-                      borderLeft: `5px solid ${themeColor}`,
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                      borderRadius: '6px',
+                      padding: '10px 16px',
+                      borderLeft: `4px solid ${themeColor}`,
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '20px',
+                      gap: '16px',
                       opacity: isPast ? 0.6 : 1,
                       filter: isPast ? 'grayscale(100%)' : 'none',
                     }}
                     >
                     {/* Calendar Block */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '60px' }}>
-                      <span style={{ fontSize: '1.7rem', fontWeight: 'bold', color: '#111', lineHeight: 1 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '45px' }}>
+                      <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#111', lineHeight: 1 }}>
                         {day}
                       </span>
-                      <span style={{ fontSize: '0.85rem', color: '#666', marginTop: '4px' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#666', marginTop: '2px' }}>
                         {weekday}
                       </span>
                     </div>
 
                     {/* Content Block */}
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       {/* Title & Badge */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                        <h3 style={{ fontSize: '1.15rem', color: '#000', margin: 0, fontWeight: 'bold' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                        <h3 style={{ fontSize: '1rem', color: '#000', margin: 0, fontWeight: 'bold', lineHeight: 1.3 }}>
                           {comp.title}
                         </h3>
                         <span style={{
                           display: 'inline-block',
-                          padding: '3px 10px',
-                          borderRadius: '20px',
+                          padding: '2px 8px',
+                          borderRadius: '12px',
                           background: themeColor,
                           color: '#fff',
-                          fontSize: '0.75rem',
+                          fontSize: '0.7rem',
                           fontWeight: '500',
                           whiteSpace: 'nowrap'
                         }}>
@@ -194,26 +195,26 @@ export default async function Home() {
                       </div>
                       
                       {/* Details Row */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', fontSize: '0.8rem', color: '#666' }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 12px', fontSize: '0.75rem', color: '#666' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#cf9840' }}>📅</span>
-                          比賽日 {comp.start_date ? comp.start_date : '依簡章公告'}
+                          {comp.start_date ? comp.start_date : '依簡章'}
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#d35400' }}>⏰</span>
-                          截止 {comp.deadline ? comp.deadline : '依簡章公告'}
+                          截止 {comp.deadline ? comp.deadline : '依簡章'}
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#c0392b' }}>📍</span>
-                          {comp.location ? comp.location : '依簡章公告'}
+                          {comp.location ? comp.location : '依簡章'}
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#34495e' }}>👥</span>
                           {comp.age_group ? comp.age_group : '詳見簡章'}
                         </span>
 
                         {comp.url && comp.url !== '#' && (
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: 'auto' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '2px', marginLeft: 'auto' }}>
                             <a href={comp.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0056b3', fontWeight: 'bold', textDecoration: 'underline' }}>
                               🔗 官方連結
                             </a>
