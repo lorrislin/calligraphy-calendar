@@ -1,0 +1,26 @@
+{
+  "name": "calligraphy-calendar",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.8",
+    "cheerio": "1.0.0-rc.12",
+    "lucide-react": "^0.364.0",
+    "next": "14.1.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "resend": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  }
+}
