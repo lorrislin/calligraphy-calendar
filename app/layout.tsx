@@ -1,5 +1,7 @@
 import './globals.css';
 import { createClient } from '@supabase/supabase-js';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata = {
   title: '陶墨書法 | 全國書法比賽行事曆',
@@ -64,6 +66,8 @@ export default async function RootLayout({
           </p>
           <p>© {new Date().getFullYear()} 陶墨書法. All Rights Reserved.</p>
         </footer>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
