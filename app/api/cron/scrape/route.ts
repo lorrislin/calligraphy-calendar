@@ -83,8 +83,12 @@ export async function GET(request: Request) {
         const keywords = ['書法', '書畫', '揮毫', '寫字', '硬筆', '美展', '蘭亭', '大墩'];
         const hasKeyword = keywords.some(kw => text.includes(kw));
 
-        // 條件：包含關鍵字、且字串不會太短（過濾掉只有「書法」兩個字的按鈕）
-        if (hasKeyword && text.length > 6) {
+        // Blacklist: 阻擋推估資料
+        const blacklist = ['推估', '(推估)', '（推估）'];
+        const isBlacklisted = blacklist.some(bl => text.includes(bl));
+
+        // 條件：包含關鍵字、非黑名單、且字串不會太短
+        if (hasKeyword && !isBlacklisted && text.length > 6) {
           // Deduplication: Avoid existing titles globally in DB or locally in this memory
           if (href && !newCompetitions.some(c => c.title === text) && !existingTitles.has(text)) {
             const fullUrl = href.startsWith('http') ? href : `${baseUrl}${href.startsWith('/') ? '' : '/'}${href}`;
