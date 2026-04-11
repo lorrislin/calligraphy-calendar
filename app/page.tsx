@@ -79,11 +79,9 @@ export default async function Home() {
             }}
             >
               <div style={{ flex: 1, paddingRight: '16px' }}>
-                <a href={comp.url || '#'} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'inline-block' }}>
-                  <h3 style={{ fontSize: '1.4rem', marginBottom: '14px' }}>
-                    {comp.title} <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>↗</span>
-                  </h3>
-                </a>
+                <h3 style={{ fontSize: '1.4rem', marginBottom: '14px', color: 'var(--text-primary)' }}>
+                  {comp.title}
+                </h3>
                 
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 24px', fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -100,12 +98,20 @@ export default async function Home() {
 
                   <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span style={{ color: '#34495e' }}>📍</span>
-                    送件地點：{comp.location ? comp.location : '依簡章公告'}
+                    地點：{comp.location ? comp.location : '依簡章公告'}
                   </span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span style={{ color: '#16a085' }}>👥</span>
-                    對象層級：{comp.age_group ? comp.age_group : '詳見簡章'}
+                    對象：{comp.age_group ? comp.age_group : '詳見簡章'}
                   </span>
+
+                  {comp.url && comp.url !== '#' && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '8px' }}>
+                      <a href={comp.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0056b3', fontWeight: 'bold', textDecoration: 'underline' }}>
+                        🔗 官方連結
+                      </a>
+                    </span>
+                  )}
                 </div>
               </div>
               
