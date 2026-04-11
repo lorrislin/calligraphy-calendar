@@ -63,7 +63,7 @@ export default async function Home() {
           <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>尚無可顯示的比賽</p>
         ) : (
           competitions.map((comp) => (
-            <div key={comp.id} style={{
+            <div key={comp.id} className="competition-card" style={{
               background: 'var(--card-bg)',
               borderRadius: '16px',
               padding: '32px',
@@ -71,18 +71,8 @@ export default async function Home() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               cursor: 'pointer'
             }}
-              onMouseOver={(e) => {
-                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-2px)';
-                (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 30px rgba(0,0,0,0.05)';
-              }}
-              onMouseOut={(e) => {
-                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
-                (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.02)';
-              }}
             >
               <div>
                 <h3 style={{ fontSize: '1.4rem', marginBottom: '12px' }}>{comp.title}</h3>
