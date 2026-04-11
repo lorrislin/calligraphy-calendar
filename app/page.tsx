@@ -72,6 +72,32 @@ export default async function Home() {
      return { day: d.getDate(), weekday: `(${weekdays[d.getDay()]})` };
   };
 
+  const renderLocation = (loc: string) => {
+    if (!loc || loc === '依簡章' || loc === '請參閱簡章' || loc === '依簡章公告') return '依簡章';
+    
+    // Split by parentheses to get just the place name
+    const parts = loc.split(/[（(]/);
+    const displayName = parts[0].trim();
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`;
+    
+    return (
+      <a 
+        href={mapUrl} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="location-link"
+        style={{ 
+          color: 'inherit', 
+          textDecoration: 'underline', 
+          textDecorationColor: '#d1d5db',
+          textUnderlineOffset: '3px'
+        }}
+      >
+        {displayName}
+      </a>
+    );
+  };
+
   const now = new Date();
   now.setHours(0,0,0,0);
   const todayMs = now.getTime();
@@ -206,7 +232,7 @@ export default async function Home() {
                         </span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#c0392b' }}>📍</span>
-                          {comp.location ? comp.location : '依簡章'}
+                          {renderLocation(comp.location)}
                         </span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#34495e' }}>👥</span>
