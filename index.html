@@ -1,673 +1,98 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>陶墨書法 - 2026年全國書法比賽行事曆</title>
-
-  <!-- FullCalendar -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>網站搬家通知 | 陶墨書法</title>
+  
+  <!-- 自動跳轉設定：3秒後導向 Vercel 網址 -->
+  <meta http-equiv="refresh" content="3; url=https://calligraphy-calendar.vercel.app/">
+  
+  <!-- SEO：告訴搜尋引擎正式網址已更換 -->
+  <link rel="canonical" href="https://calligraphy-calendar.vercel.app/" />
+  
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
+    :root {
+      --bg: #F8F8F5;
+      --accent: #C9A962;
+      --text: #1A1A1A;
+    }
     body {
-      font-family: "Noto Serif TC", "思源宋體", serif;
-      background: #f5f5f5;
-      color: #1a1a1a;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    header {
-      background-color: #f4f1ea; /* 更古樸的宣紙底色 */
-      background-image: 
-        url("https://www.transparenttextures.com/patterns/rice-paper.png"), /* 真實的宣紙纖維無縫圖檔 */
-        radial-gradient(ellipse at 15% 30%, rgba(20, 20, 20, 0.12) 0%, transparent 50%), /* 左上角水墨暈染 */
-        radial-gradient(circle at 85% 80%, rgba(40, 45, 50, 0.06) 0%, transparent 50%); /* 右下角微弱墨暈 */
-      color: #1a1a1a;
-      padding: 20px 32px;
+      margin: 0;
+      padding: 0;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* 配合淺色背景調弱陰影 */
-    }
-    header h1 {
-      font-family: "Kaiti TC", "BiauKai", "標楷體", "STKaiti", serif; /* 換成毛筆/楷書字體 */
-      font-size: 1.8rem;
-      font-weight: bold;
-      letter-spacing: 0.1em;
-    }
-    header h1 span {
-      font-size: 0.9rem;
-      opacity: 0.75;
-      display: block;
-      letter-spacing: 0.05em;
-      font-family: "Noto Serif TC", "思源宋體", serif; /* 副標題切換回一般宋體以維持清晰度 */
-      margin-top: 2px;
-    }
-
-    /* ── View Toggle ── */
-    .view-toggle {
-      display: flex;
-      gap: 8px;
-    }
-    .view-toggle button {
-      padding: 7px 18px;
-      border: 2px solid #333333; /* 按鈕邊框改為深色 */
-      border-radius: 20px;
-      background: transparent;
-      color: #333333; /* 按鈕文字改為深色 */
-      font-family: inherit;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .view-toggle button.active,
-    .view-toggle button:hover {
-      background: #333333; /* 滑鼠移入或啟動時背景變為墨色 */
-      color: #ffffff; /* 文字反白 */
-      font-weight: bold;
-    }
-
-    /* ── Filter Bar ── */
-    .filter-bar {
-      background: #ffffff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 10px 32px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .filter-bar span { font-size: 0.85rem; color: #333333; }
-    .filter-btn {
-      padding: 4px 14px;
-      border-radius: 14px;
-      border: 1.5px solid;
-      font-size: 0.82rem;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.2s;
-    }
-    .filter-btn[data-cat="all"]      { border-color: #333333; color: #333333; background: #fff; }
-    .filter-btn[data-cat="hsinchu"]  { border-color: #c0392b; color: #c0392b; background: #fff; }
-    .filter-btn[data-cat="regional"] { border-color: #d35400; color: #d35400; background: #fff; }
-    .filter-btn[data-cat="national"] { border-color: #1a5276; color: #1a5276; background: #fff; }
-    .filter-btn.active,
-    .filter-btn:hover {
-      filter: brightness(0.92);
-    }
-    .filter-btn[data-cat="all"].active      { background: #333333; color: #fff; }
-    .filter-btn[data-cat="hsinchu"].active  { background: #c0392b; color: #fff; }
-    .filter-btn[data-cat="regional"].active { background: #d35400; color: #fff; }
-    .filter-btn[data-cat="national"].active { background: #1a5276; color: #fff; }
-
-    /* ── Main Content ── */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px 20px;
-    }
-
-    /* ── Calendar ── */
-    #calendar-view { display: none; }
-    #list-view     { display: block; }
-
-    #calendar {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 16px;
-    }
-
-    /* FullCalendar overrides */
-    .fc .fc-toolbar-title { font-size: 1.2rem; color: #1a1a1a; }
-    .fc .fc-button-primary {
-      background: #4a4a4a !important;
-      border-color: #4a4a4a !important;
-    }
-    .fc .fc-button-primary:hover {
-      background: #333333 !important;
-      border-color: #333333 !important;
-    }
-    .fc .fc-button-primary:not(:disabled).fc-button-active {
-      background: #1a1a1a !important;
-      border-color: #1a1a1a !important;
-    }
-    .fc-event {
-      cursor: pointer;
-      border: none !important;
-      font-size: 0.82rem;
-      padding: 2px 5px;
-      border-radius: 4px !important;
-    }
-    .fc-daygrid-dot-event .fc-event-title { font-size: 0.8rem; }
-
-    /* ── List View ── */
-    .list-section { margin-bottom: 28px; }
-    .list-month-title {
-      font-size: 1rem;
-      color: #333333;
-      border-left: 4px solid #333333;
-      padding-left: 10px;
-      margin-bottom: 12px;
-      letter-spacing: 0.05em;
-    }
-    .list-item {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
-      padding: 14px 18px;
-      margin-bottom: 10px;
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-      border-left: 5px solid #ccc;
-    }
-    .list-item:hover {
-      transform: translateX(3px);
-      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-    }
-    .list-date-box {
-      text-align: center;
-      min-width: 48px;
-    }
-    .list-date-box .day {
-      font-size: 1.6rem;
-      font-weight: bold;
-      line-height: 1;
-      color: #1a1a1a;
-    }
-    .list-date-box .month {
-      font-size: 0.75rem;
-      color: #555555;
-    }
-    .list-info { flex: 1; }
-    .list-info h3 { font-size: 1rem; margin-bottom: 4px; }
-    .list-meta {
-      font-size: 0.8rem;
-      color: #555555;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .list-meta span::before { margin-right: 3px; }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 0.72rem;
-      font-weight: bold;
-      margin-left: 8px;
-      vertical-align: middle;
-    }
-
-    /* Category colors */
-
-    .fc-event.cat-hsinchu  { background-color: #c0392b !important; }
-    .fc-event.cat-regional { background-color: #d35400 !important; }
-    .fc-event.cat-national { background-color: #1a5276 !important; }
-
-    .list-item.cat-hsinchu  { border-left-color: #c0392b; }
-    .list-item.cat-regional { border-left-color: #d35400; }
-    .list-item.cat-national { border-left-color: #1a5276; }
-    .list-item.tbd { opacity: 0.75; background: #fafafa; }
-    .list-item.tbd:hover { opacity: 1; }
-
-    /* ── Modal ── */
-    .modal-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.45);
-      z-index: 1000;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      height: 100vh;
+      background-color: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      text-align: center;
     }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: #fff;
-      border-radius: 14px;
-      max-width: 520px;
-      width: 100%;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      overflow: hidden;
-      animation: slideUp 0.2s ease;
+    .container {
+      max-width: 500px;
+      padding: 40px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
     }
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to   { transform: translateY(0);    opacity: 1; }
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 24px;
+      letter-spacing: 2px;
     }
-    .modal-header {
-      padding: 18px 22px 14px;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
     }
-    .modal-header h2 { font-size: 1.1rem; line-height: 1.4; flex: 1; }
-    .modal-close {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: #fff;
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-left: 10px;
-      flex-shrink: 0;
+    p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 32px;
     }
-    .modal-body {
-      padding: 16px 22px 22px;
-    }
-    .modal-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      font-size: 0.88rem;
-      align-items: flex-start;
-    }
-    .modal-label {
-      color: #555555;
-      min-width: 64px;
-      flex-shrink: 0;
-    }
-    .modal-value { color: #1a1a1a; }
-    .modal-desc {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #eee;
-      font-size: 0.86rem;
-      color: #333333;
-      line-height: 1.7;
-    }
-    .deadline-badge {
+    .btn {
       display: inline-block;
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffc107;
-      border-radius: 6px;
-      padding: 2px 8px;
-      font-size: 0.82rem;
+      padding: 14px 32px;
+      background-color: var(--text);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 500;
+      transition: transform 0.2s, background-color 0.2s;
     }
-
-    /* ── Tooltip (desktop hover) ── */
-    .tooltip {
-      position: fixed;
-      background: #222222;
-      color: #ffffff;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      pointer-events: none;
-      z-index: 999;
-      max-width: 220px;
-      line-height: 1.5;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      display: none;
+    .btn:hover {
+      background-color: var(--accent);
+      transform: translateY(-2px);
     }
-
-    /* ── Empty state ── */
-    .empty-state {
-      text-align: center;
-      padding: 48px 20px;
-      color: #aaa;
-      font-size: 0.95rem;
+    .loader {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: #AAA;
     }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 20px 16px 40px;
-      font-size: 0.8rem;
-      color: #888888;
+    .dot {
+      animation: blink 1.4s infinite both;
     }
-
-    @media (max-width: 600px) {
-      header { padding: 16px; }
-      header h1 { font-size: 1.3rem; }
-      .filter-bar { padding: 10px 16px; }
-      main { padding: 16px 12px; }
+    .dot:nth-child(2) { animation-delay: .2s; }
+    .dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink {
+      0% { opacity: .2; }
+      20% { opacity: 1; }
+      100% { opacity: .2; }
     }
   </style>
 </head>
 <body>
-
-<header>
-  <h1>陶墨書法 - 2026年全國書法比賽行事曆
-    <span><span id="last-updated">載入中…</span></span>
-  </h1>
-  <div class="view-toggle">
-    <button id="btn-calendar" onclick="switchView('calendar')">月曆視圖</button>
-    <button id="btn-list" class="active" onclick="switchView('list')">列表視圖</button>
-  </div>
-</header>
-
-<div class="filter-bar">
-  <span>篩選：</span>
-  <button class="filter-btn active" data-cat="all"      onclick="setFilter('all')">全部</button>
-  <button class="filter-btn"        data-cat="hsinchu"  onclick="setFilter('hsinchu')">新竹市/縣</button>
-  <button class="filter-btn"        data-cat="regional" onclick="setFilter('regional')">區域賽</button>
-  <button class="filter-btn"        data-cat="national" onclick="setFilter('national')">全國賽</button>
-</div>
-
-<main>
-  <div id="calendar-view">
-    <div id="calendar"></div>
-  </div>
-  <div id="list-view">
-    <div id="list-container"></div>
-  </div>
-</main>
-
-<footer>
-  本網站資料皆從網路上蒐集彙整，僅供參考。我們不對資料的準確性負責，實際競賽資訊請以各主辦單位最新公告為準。
-</footer>
-
-<!-- Tooltip -->
-<div class="tooltip" id="tooltip"></div>
-
-<!-- Modal -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
-    <div class="modal-header" id="modal-header">
-      <h2 id="modal-title"></h2>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+  <div class="container">
+    <div class="logo">陶墨書法</div>
+    <h1>網站已搬遷至新址</h1>
+    <p>我們已將「書法比賽行事曆」升級至功能更強大的新平台，提供更精準的自動更新與互動體驗。</p>
+    
+    <a href="https://calligraphy-calendar.vercel.app/" class="btn">立即前往新站</a>
+    
+    <div class="loader">
+      系統將在 3 秒內為您自動跳轉<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
     </div>
-    <div class="modal-body" id="modal-body"></div>
   </div>
-</div>
-
-<script>
-  const CATEGORY_LABELS = {
-    hsinchu:  '新竹市/縣',
-    regional: '區域賽',
-    national: '全國賽',
-  };
-  const CATEGORY_COLORS = {
-    hsinchu:  '#c0392b',
-    regional: '#d35400',
-    national: '#1a5276',
-  };
-
-  let allData = [];
-  let currentFilter = 'all';
-  let calendarInstance = null;
-
-  // ── Load Data ──
-  fetch('data/competitions.json?v=' + Date.now()) // Use cache-busting param
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok: ' + response.statusText);
-      }
-      // Get the last-modified date from the response header
-      const lastModifiedHeader = response.headers.get('Last-Modified');
-      if (lastModifiedHeader) {
-        const lastModifiedDate = new Date(lastModifiedHeader);
-        // Format to YYYY-MM-DD HH:mm in Taiwan's timezone for consistency
-        const options = {
-          year: 'numeric', month: '2-digit', day: '2-digit',
-          hour: '2-digit', minute: '2-digit', hour12: false,
-          timeZone: 'Asia/Taipei'
-        };
-        const formattedDate = new Intl.DateTimeFormat('sv-SE', options).format(lastModifiedDate).replace('T', ' ');
-        document.getElementById('last-updated').textContent = '資料更新：' + formattedDate;
-      }
-      return response.json(); // Pass the JSON promise down the chain
-    })
-    .then(data => {
-      // Handle both object {competitions: []} and raw array formats
-      allData = data.competitions || (Array.isArray(data) ? data : []);
-      initCalendar();
-      renderList();
-    })
-    .catch(error => {
-      console.error('Error loading competition data:', error);
-      document.getElementById('list-container').innerHTML =
-        '<div class="empty-state">無法載入比賽資料，請稍後再試。</div>';
-      document.getElementById('last-updated').textContent = '資料載入失敗';
-    });
-
-  // ── Filter ──
-  function setFilter(cat) {
-    currentFilter = cat;
-    document.querySelectorAll('.filter-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.cat === cat);
-    });
-    if (calendarInstance) {
-      calendarInstance.getEvents().forEach(e => e.remove());
-      filteredData().filter(i => !i.tbd).forEach(item => calendarInstance.addEvent(toFCEvent(item)));
-    }
-    renderList();
-  }
-
-  function filteredData() {
-    if (currentFilter === 'all') return allData;
-    return allData.filter(d => d.category === currentFilter);
-  }
-
-  // ── FullCalendar ──
-  function toFCEvent(item) {
-    return {
-      id: item.id,
-      title: item.estimated ? `[預估] ` + item.title : item.title,
-      start: item.start,
-      classNames: ['cat-' + item.category],
-      extendedProps: item,
-    };
-  }
-
-  function initCalendar() {
-    const el = document.getElementById('calendar');
-    calendarInstance = new FullCalendar.Calendar(el, {
-      initialView: 'dayGridMonth',
-      locale: 'zh-tw',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: '',
-      },
-      height: 'auto',
-      events: filteredData().filter(i => !i.tbd).map(toFCEvent),
-      eventMouseEnter(info) {
-        showTooltip(info.event.extendedProps, info.jsEvent);
-      },
-      eventMouseLeave() {
-        hideTooltip();
-      },
-      eventClick(info) {
-        openModal(info.event.extendedProps);
-      },
-    });
-    calendarInstance.render();
-  }
-
-  // ── List View ──
-  function renderList() {
-    const container = document.getElementById('list-container');
-    const data = filteredData();
-    const dated = data.filter(i => !i.tbd).sort((a, b) => a.start.localeCompare(b.start));
-    const tbd   = data.filter(i =>  i.tbd);
-
-    if (data.length === 0) {
-      container.innerHTML = '<div class="empty-state">目前沒有符合條件的比賽資料。</div>';
-      return;
-    }
-
-    // Group dated events by month
-    const groups = {};
-    dated.forEach(item => {
-      const key = item.start.slice(0, 7);
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(item);
-    });
-
-    const datedHtml = Object.entries(groups).map(([month, items]) => {
-      const [y, m] = month.split('-');
-      return `
-        <div class="list-section">
-          <div class="list-month-title">${y} 年 ${parseInt(m)} 月</div>
-          ${items.map(item => renderListItem(item, false)).join('')}
-        </div>
-      `;
-    }).join('');
-
-    const tbdHtml = tbd.length === 0 ? '' : `
-      <div class="list-section">
-        <div class="list-month-title" style="border-left-color:#666;color:#666">
-          ⏳ 日期待公告（${tbd.length} 場）
-        </div>
-        ${tbd.map(item => renderListItem(item, true)).join('')}
-      </div>
-    `;
-
-    container.innerHTML = datedHtml + tbdHtml ||
-      '<div class="empty-state">目前沒有符合條件的比賽資料。</div>';
-  }
-
-  function renderListItem(item, isTbd) {
-    const weekDays = ['日','一','二','三','四','五','六'];
-    let dateBox;
-    if (isTbd) {
-      dateBox = `<div class="list-date-box"><div class="day" style="font-size:1rem;color:#999">TBD</div></div>`;
-    } else {
-      const d = new Date(item.start + 'T00:00:00');
-      dateBox = `
-        <div class="list-date-box">
-          <div class="day">${d.getDate()}</div>
-          <div class="month">（${weekDays[d.getDay()]}）</div>
-        </div>`;
-    }
-    const estimatedBadge = item.estimated
-      ? `<span class="badge" style="background:#f39c12;color:#fff">預估</span>` : '';
-    return `
-      <div class="list-item cat-${item.category}${isTbd ? ' tbd' : ''}" onclick="openModal('${item.id}')">
-        ${dateBox}
-        <div class="list-info">
-          <h3>${item.title}
-            <span class="badge" style="background:${CATEGORY_COLORS[item.category]};color:#fff">
-              ${CATEGORY_LABELS[item.category] || item.category}
-            </span>
-            ${estimatedBadge}
-          </h3>
-          <div class="list-meta">
-            <span>📍 ${item.location}</span>
-            <span>⏰ 截止 ${item.deadline}</span>
-            <span>👥 ${item.ageGroup}</span>
-            ${item.url ? `<span><a href="${item.url}" target="_blank" rel="noopener" style="color: #0056b3; font-weight: bold;" onclick="event.stopPropagation()">🔗 官方連結</a></span>` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-
-  // ── Tooltip ──
-  const tooltip = document.getElementById('tooltip');
-
-  function showTooltip(item, mouseEvent) {
-    tooltip.innerHTML = `
-      <strong>${item.title} ${item.estimated ? '<span style="color:#f39c12; font-size: 0.9em;">(預估)</span>' : ''}</strong><br>
-      📍 ${item.location}<br>
-      ⏰ 截止報名：${item.deadline}<br>
-      💰 ${item.fee}
-    `;
-    tooltip.style.display = 'block';
-    moveTooltip(mouseEvent);
-  }
-
-  function moveTooltip(e) {
-    const x = e.clientX + 14;
-    const y = e.clientY + 14;
-    tooltip.style.left = Math.min(x, window.innerWidth - 240) + 'px';
-    tooltip.style.top  = Math.min(y, window.innerHeight - 120) + 'px';
-  }
-
-  function hideTooltip() {
-    tooltip.style.display = 'none';
-  }
-
-  document.addEventListener('mousemove', e => {
-    if (tooltip.style.display === 'block') moveTooltip(e);
-  });
-
-  // ── Modal ──
-  function openModal(item) {
-    if (typeof item === 'string') {
-      const found = allData.find(d => d.id === item);
-      item = found || JSON.parse(item);
-    }
-    hideTooltip();
-
-    const color = CATEGORY_COLORS[item.category] || '#555';
-    document.getElementById('modal-header').style.background =
-      `linear-gradient(135deg, ${color}, ${color}cc)`;
-    document.getElementById('modal-title').textContent = item.title + (item.estimated ? ' (預估日期)' : '');
-
-    const d = new Date(item.start + 'T00:00:00');
-    const weekDays = ['日','一','二','三','四','五','六'];
-    const dateStr = `${d.getFullYear()} 年 ${d.getMonth()+1} 月 ${d.getDate()} 日（${weekDays[d.getDay()]}）`;
-
-    document.getElementById('modal-body').innerHTML = `
-      <div class="modal-row">
-        <span class="modal-label">比賽日期</span>
-        <span class="modal-value">${dateStr}</span>
-      </div>
-      <div class="modal-row">
-        <span class="modal-label">報名截止</span>
-        <span class="modal-value"><span class="deadline-badge">⏰ ${item.deadline}</span></span>
-      </div>
-      <div class="modal-row">
-        <span class="modal-label">地點</span>
-        <span class="modal-value">📍 ${item.location}</span>
-      </div>
-      <div class="modal-row">
-        <span class="modal-label">主辦單位</span>
-        <span class="modal-value">${item.organizer}</span>
-      </div>
-      <div class="modal-row">
-        <span class="modal-label">適合年齡</span>
-        <span class="modal-value">${item.ageGroup}</span>
-      </div>
-      <div class="modal-row">
-        <span class="modal-label">報名費用</span>
-        <span class="modal-value">${item.fee}</span>
-      </div>
-      ${item.url ? `
-      <div class="modal-row">
-        <span class="modal-label">官方連結</span>
-        <span class="modal-value"><a href="${item.url}" target="_blank" rel="noopener">前往官網</a></span>
-      </div>` : ''}
-      ${item.description ? `<div class="modal-desc">${item.description}</div>` : ''}
-    `;
-
-    document.getElementById('modal-overlay').classList.add('open');
-  }
-
-  function closeModal(e) {
-    if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
-  }
-  function closeModalDirect() {
-    document.getElementById('modal-overlay').classList.remove('open');
-  }
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModalDirect();
-  });
-
-  // ── View Switch ──
-  function switchView(v) {
-    document.getElementById('calendar-view').style.display = v === 'calendar' ? 'block' : 'none';
-    document.getElementById('list-view').style.display     = v === 'list'     ? 'block' : 'none';
-    document.getElementById('btn-calendar').classList.toggle('active', v === 'calendar');
-    document.getElementById('btn-list').classList.toggle('active', v === 'list');
-    if (v === 'calendar' && calendarInstance) calendarInstance.updateSize();
-  }
-</script>
 </body>
 </html>
