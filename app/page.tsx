@@ -133,7 +133,7 @@ export default async function Home() {
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       {/* Title & Badge */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                        <h3 style={{ fontSize: '1.1rem', color: '#111', margin: 0, fontWeight: 600 }}>
+                        <h3 style={{ fontSize: '1.15rem', color: '#000', margin: 0, fontWeight: 'bold' }}>
                           {comp.title}
                         </h3>
                         <span style={{
@@ -151,7 +151,7 @@ export default async function Home() {
                       </div>
                       
                       {/* Details Row */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', fontSize: '0.85rem', color: '#555' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', fontSize: '0.8rem', color: '#666' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <span style={{ color: '#cf9840' }}>📅</span>
                           比賽日 {comp.start_date ? comp.start_date : '依簡章公告'}
