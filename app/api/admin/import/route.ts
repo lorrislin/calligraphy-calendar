@@ -8,10 +8,16 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function GET() {
   try {
+    // 防護機制：檢查資料庫是否已經有舊資料了，避免重複匯入 (Chrome預載或Bot爬蟲會意外觸發重複執行)
+    const { data: existingData } = await supabase.from('competitions').select('title');
+    const existingTitles = new Set(existingData?.map(d => d.title) || []);
+
     const competitions = legacyData.competitions;
     
-    // Convert legacy array to the new Supabase schema schema
-    const mappedData = competitions.map((comp: any) => {
+    // Convert legacy array to the new Supabase schema schema, filtering out already imported ones
+    const mappedData = competitions
+      .filter((comp: any) => !existingTitles.has(comp.title))
+      .map((comp: any) => {
       // Safely validate dates for PostgreSQL DATE format (must be YYYY-MM-DD or null)
       const parseDate = (d: string) => {
         if (!d || d === '待公告' || d.includes('推估')) return null;
@@ -31,6 +37,13 @@ export async function GET() {
         status: 'approved' // Automatically post to the calendar
       };
     });
+
+    if (mappedData.length === 0) {
+      return NextResponse.json({ 
+        success: true, 
+        message: 'No new legacy data to import. Duplicates skipped.' 
+      });
+    }
 
     // Batched bulk insert into Supabase
     const { data, error } = await supabase
