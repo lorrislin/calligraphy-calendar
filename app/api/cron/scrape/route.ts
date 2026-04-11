@@ -72,8 +72,13 @@ export async function GET(request: Request) {
         const text = $(element).text().trim();
         const href = $(element).attr('href');
 
-        // Heuristic filtering: Look for calligraphy events
-        if (text.includes('書法') && (text.includes('賽') || text.includes('展') || text.includes('徵件'))) {
+        // Heuristic filtering: 更寬鬆的雷達
+        // 不再要求同時具備「書法」+「比賽」，只要有關鍵字就通通抓！
+        const keywords = ['書法', '書畫', '揮毫', '寫字', '硬筆', '美展', '蘭亭', '大墩'];
+        const hasKeyword = keywords.some(kw => text.includes(kw));
+
+        // 條件：包含關鍵字、且字串不會太短（過濾掉只有「書法」兩個字的按鈕）
+        if (hasKeyword && text.length > 6) {
           // Deduplication: Avoid existing titles globally globally in this execution memory
           if (href && !newCompetitions.some(c => c.title === text)) {
             const fullUrl = href.startsWith('http') ? href : `${baseUrl}${href.startsWith('/') ? '' : '/'}${href}`;
