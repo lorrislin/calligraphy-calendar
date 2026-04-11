@@ -74,12 +74,12 @@ export default async function Home() {
   return (
     <div className="container" style={{ padding: '32px 24px' }}>
 
-      {/* Filters (Mock UI) */}
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', justifyContent: 'center' }}>
-        <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', padding: '8px 0' }}>篩選: </span>
-        <button style={{ padding: '8px 24px', borderRadius: '30px', border: '1px solid var(--text-primary)', background: 'var(--text-primary)', color: '#fff' }}>全部</button>
-        <button style={{ padding: '8px 24px', borderRadius: '30px', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>全國賽</button>
-        <button style={{ padding: '8px 24px', borderRadius: '30px', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>區域賽</button>
+      {/* Filters (Minimal Modern UI) */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <span style={{ fontSize: '0.8rem', color: '#888', marginRight: '4px' }}>分類篩選：</span>
+        <button style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: '4px', border: 'none', background: '#333', color: '#fff', cursor: 'pointer' }}>全部</button>
+        <button style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #eee', background: 'transparent', color: '#666', cursor: 'pointer' }}>全國賽</button>
+        <button style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: '4px', border: '1px solid #eee', background: 'transparent', color: '#666', cursor: 'pointer' }}>區域賽</button>
       </div>
 
       {/* List Layout */}
@@ -101,12 +101,18 @@ export default async function Home() {
               </h2>
               {comps.map((comp) => {
                 const { day, weekday } = getDayAndWeekday(comp.start_date);
+                
+                // Dynamic styling for category
+                const isRegional = comp.category === 'regional';
+                const isGeneral = comp.category === 'general';
+                const themeColor = isRegional ? '#d35400' : isGeneral ? '#27ae60' : '#1a5b74';
+
                 return (
                   <div key={comp.id} className="competition-card" style={{
                     background: '#fff',
                     borderRadius: '8px',
                     padding: '12px 20px',
-                    borderLeft: '5px solid #1a5b74',
+                    borderLeft: `5px solid ${themeColor}`,
                     boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                     display: 'flex',
                     alignItems: 'center',
@@ -134,7 +140,7 @@ export default async function Home() {
                           display: 'inline-block',
                           padding: '3px 10px',
                           borderRadius: '20px',
-                          background: '#1a5b74',
+                          background: themeColor,
                           color: '#fff',
                           fontSize: '0.75rem',
                           fontWeight: '500',

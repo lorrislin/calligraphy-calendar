@@ -46,19 +46,22 @@ export default async function RootLayout({
   return (
     <html lang="zh-TW">
       <body>
-        <header style={{ padding: '24px 0 16px', borderBottom: '1px solid var(--border-color)', textAlign: 'center' }}>
+        <header style={{ position: 'relative', padding: '24px 0 16px', borderBottom: '1px solid var(--border-color)', textAlign: 'center' }}>
+          <div style={{ position: 'absolute', top: '16px', right: '24px', fontSize: '0.75rem', color: '#95a5a6' }}>
+            最後更新：{lastUpdatedStr}
+          </div>
           <h1 style={{ fontSize: '2.2rem', marginBottom: '4px', color: '#111' }}>陶墨書法</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', letterSpacing: '0.1em', margin: 0 }}>
             2026 全國書法比賽行事曆
           </p>
-          <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#7f8c8d' }}>
-            最後更新：{lastUpdatedStr}
-          </div>
         </header>
         <main>
           {children}
         </main>
-        <footer style={{ padding: '60px 0', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+        <footer style={{ padding: '60px 24px', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+          <p style={{ marginBottom: '8px', maxWidth: '600px', margin: '0 auto 8px', lineHeight: 1.5 }}>
+            本網站資料皆從網路上蒐集彙整，僅供參考。<br/>我們不對資料的準確性負責，實際競賽資訊請以各主辦單位最新公告為準。
+          </p>
           <p>© {new Date().getFullYear()} 陶墨書法. All Rights Reserved.</p>
         </footer>
       </body>
