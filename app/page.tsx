@@ -75,9 +75,30 @@ export default async function Home() {
   const renderLocation = (loc: string) => {
     if (!loc || loc === '依簡章' || loc === '請參閱簡章' || loc === '依簡章公告') return '依簡章';
     
-    // Split by parentheses to get just the place name
-    const parts = loc.split(/[（(]/);
-    const displayName = parts[0].trim();
+    // 1. Handle potential Semicolon (Salianbao example: "Address; extra info")
+    let target = loc.split(/[；;]/)[0].trim();
+    
+    // 2. Extract Prefix (like "送件：")
+    let prefix = "";
+    const prefixMatch = target.match(/^(.*?[：:])\s*(.*)$/);
+    if (prefixMatch) {
+      prefix = prefixMatch[1];
+      target = prefixMatch[2].trim();
+    }
+
+    // 3. Handle Parentheses (花蓮縣立體育館 (Address) )
+    const parenParts = target.split(/[（(]/);
+    target = parenParts[0].trim();
+
+    // 4. Handle Space between Address and Entity (台中市...99號 大墩文化局)
+    // We look for parts after the final "number/floor" pattern if there is a space
+    const spaceParts = target.split(/\s+/);
+    if (spaceParts.length > 1) {
+      // If there's a space, the last part is usually the Name
+      target = spaceParts[spaceParts.length - 1];
+    }
+    
+    const displayName = `${prefix}${target}`;
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`;
     
     return (
