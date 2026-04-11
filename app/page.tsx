@@ -198,11 +198,11 @@ export default async function Home() {
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 12px', fontSize: '0.75rem', color: '#666' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#cf9840' }}>📅</span>
-                          {comp.start_date ? comp.start_date : '依簡章'}
+                          比賽: {comp.start_date ? comp.start_date : '依簡章'}
                         </span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#d35400' }}>⏰</span>
-                          截止 {comp.deadline ? comp.deadline : '依簡章'}
+                          截止: {comp.deadline ? comp.deadline : '依簡章'}
                         </span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span style={{ color: '#c0392b' }}>📍</span>
