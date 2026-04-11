@@ -32,6 +32,10 @@ export async function GET(request: Request) {
     const newCompetitions: any[] = [];
     const currentYear = new Date().getFullYear();
 
+    // 0. Load existing items from DB to prevent repeated emails across multiple cron runs
+    const { data: existingRecords } = await supabase.from('competitions').select('title');
+    const existingTitles = new Set(existingRecords?.map((r: any) => r.title) || []);
+
     // 1. Concurrent Fetching (max 3 seconds per site to strictly avoid Vercel 10s timeout)
     const fetchPromises = TARGET_URLS.map(async (targetUrl) => {
       try {
@@ -79,8 +83,8 @@ export async function GET(request: Request) {
 
         // 條件：包含關鍵字、且字串不會太短（過濾掉只有「書法」兩個字的按鈕）
         if (hasKeyword && text.length > 6) {
-          // Deduplication: Avoid existing titles globally globally in this execution memory
-          if (href && !newCompetitions.some(c => c.title === text)) {
+          // Deduplication: Avoid existing titles globally in DB or locally in this memory
+          if (href && !newCompetitions.some(c => c.title === text) && !existingTitles.has(text)) {
             const fullUrl = href.startsWith('http') ? href : `${baseUrl}${href.startsWith('/') ? '' : '/'}${href}`;
             
             newCompetitions.push({
