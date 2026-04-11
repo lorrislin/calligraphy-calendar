@@ -1,5 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
+export const dynamic = 'force-dynamic';
+
 // Setup Supabase Client (Will work once user adds SUPERBASE_URL and SUPABASE_ANON_KEY to Vercel env)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -38,7 +40,7 @@ export default async function Home() {
       .select('*')
       .eq('status', 'approved')
       .order('start_date', { ascending: true });
-    
+
     if (data && !error) {
       competitions = data;
     }
@@ -46,7 +48,7 @@ export default async function Home() {
 
   return (
     <div className="container" style={{ padding: '60px 24px' }}>
-      
+
       {/* Filters (Mock UI) */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '40px', justifyContent: 'center' }}>
         <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', padding: '8px 0' }}>篩選: </span>
@@ -73,14 +75,14 @@ export default async function Home() {
               transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               cursor: 'pointer'
             }}
-            onMouseOver={(e) => {
-              (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-2px)';
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 30px rgba(0,0,0,0.05)';
-            }}
-            onMouseOut={(e) => {
-              (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
-              (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.02)';
-            }}
+              onMouseOver={(e) => {
+                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-2px)';
+                (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 30px rgba(0,0,0,0.05)';
+              }}
+              onMouseOut={(e) => {
+                (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+                (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.02)';
+              }}
             >
               <div>
                 <h3 style={{ fontSize: '1.4rem', marginBottom: '12px' }}>{comp.title}</h3>
@@ -90,11 +92,11 @@ export default async function Home() {
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ 
+                <span style={{
                   display: 'inline-block',
-                  padding: '6px 16px', 
-                  borderRadius: '20px', 
-                  background: 'var(--bg-color)', 
+                  padding: '6px 16px',
+                  borderRadius: '20px',
+                  background: 'var(--bg-color)',
                   color: 'var(--accent-gold)',
                   fontSize: '0.8rem',
                   fontWeight: '500',

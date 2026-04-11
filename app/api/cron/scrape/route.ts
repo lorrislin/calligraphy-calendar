@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     // Assuming we found new data
     for (const comp of newCompetitions) {
       const approval_token = crypto.randomBytes(16).toString('hex');
-      
+
       // 2. Insert into Supabase as pending
       const { data, error } = await supabase
         .from('competitions')
