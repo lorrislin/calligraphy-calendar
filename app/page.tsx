@@ -103,9 +103,9 @@ export default async function Home() {
                 const { day, weekday } = getDayAndWeekday(comp.start_date);
                 
                 // Dynamic styling for category
+                const isNational = comp.category === 'national';
                 const isRegional = comp.category === 'regional';
-                const isGeneral = comp.category === 'general';
-                const themeColor = isRegional ? '#d35400' : isGeneral ? '#27ae60' : '#1a5b74';
+                const themeColor = isNational ? '#1a5b74' : isRegional ? '#d35400' : '#27ae60';
 
                 return (
                   <div key={comp.id} className="competition-card" style={{
@@ -146,7 +146,7 @@ export default async function Home() {
                           fontWeight: '500',
                           whiteSpace: 'nowrap'
                         }}>
-                          {comp.category === 'national' ? '全國賽' : comp.category === 'regional' ? '區域賽' : '一般展賽'}
+                          {isNational ? '全國賽' : isRegional ? '區域賽' : '一般展賽'}
                         </span>
                       </div>
                       
