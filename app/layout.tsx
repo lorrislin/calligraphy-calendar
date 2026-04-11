@@ -46,12 +46,12 @@ export default async function RootLayout({
   return (
     <html lang="zh-TW">
       <body>
-        <header style={{ padding: '40px 0', borderBottom: '1px solid var(--border-color)', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '8px' }}>陶墨書法</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', letterSpacing: '0.1em' }}>
+        <header style={{ padding: '24px 0 16px', borderBottom: '1px solid var(--border-color)', textAlign: 'center' }}>
+          <h1 style={{ fontSize: '2.2rem', marginBottom: '4px', color: '#111' }}>陶墨書法</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', letterSpacing: '0.1em', margin: 0 }}>
             2026 全國書法比賽行事曆
           </p>
-          <div style={{ marginTop: '16px', fontSize: '0.85rem', color: '#7f8c8d' }}>
+          <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#7f8c8d' }}>
             最後更新：{lastUpdatedStr}
           </div>
         </header>

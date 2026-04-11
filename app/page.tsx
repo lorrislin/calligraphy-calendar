@@ -72,10 +72,10 @@ export default async function Home() {
   };
 
   return (
-    <div className="container" style={{ padding: '60px 24px' }}>
+    <div className="container" style={{ padding: '32px 24px' }}>
 
       {/* Filters (Mock UI) */}
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '40px', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', justifyContent: 'center' }}>
         <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', padding: '8px 0' }}>篩選: </span>
         <button style={{ padding: '8px 24px', borderRadius: '30px', border: '1px solid var(--text-primary)', background: 'var(--text-primary)', color: '#fff' }}>全部</button>
         <button style={{ padding: '8px 24px', borderRadius: '30px', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>全國賽</button>
@@ -83,18 +83,19 @@ export default async function Home() {
       </div>
 
       {/* List Layout */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {Object.keys(groupedCompetitions).length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>尚無可顯示的比賽</p>
         ) : (
           Object.entries(groupedCompetitions).map(([monthYear, comps]) => (
-            <div key={monthYear} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div key={monthYear} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <h2 style={{ 
-                fontSize: '1.2rem', 
+                fontSize: '1.1rem', 
                 color: '#333', 
                 borderLeft: '4px solid #333', 
                 paddingLeft: '12px', 
-                marginBottom: '8px' 
+                marginBottom: '4px',
+                marginTop: '12px' 
               }}>
                 {monthYear}
               </h2>
@@ -104,34 +105,34 @@ export default async function Home() {
                   <div key={comp.id} className="competition-card" style={{
                     background: '#fff',
                     borderRadius: '8px',
-                    padding: '16px 24px',
+                    padding: '12px 20px',
                     borderLeft: '5px solid #1a5b74',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '24px',
+                    gap: '20px',
                   }}
                   >
                     {/* Calendar Block */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '60px' }}>
-                      <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#111', lineHeight: 1 }}>
+                      <span style={{ fontSize: '1.7rem', fontWeight: 'bold', color: '#111', lineHeight: 1 }}>
                         {day}
                       </span>
-                      <span style={{ fontSize: '0.9rem', color: '#666', marginTop: '4px' }}>
+                      <span style={{ fontSize: '0.85rem', color: '#666', marginTop: '4px' }}>
                         {weekday}
                       </span>
                     </div>
 
                     {/* Content Block */}
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       {/* Title & Badge */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                        <h3 style={{ fontSize: '1.15rem', color: '#111', margin: 0, fontWeight: 600 }}>
+                        <h3 style={{ fontSize: '1.1rem', color: '#111', margin: 0, fontWeight: 600 }}>
                           {comp.title}
                         </h3>
                         <span style={{
                           display: 'inline-block',
-                          padding: '4px 12px',
+                          padding: '3px 10px',
                           borderRadius: '20px',
                           background: '#1a5b74',
                           color: '#fff',
@@ -144,7 +145,7 @@ export default async function Home() {
                       </div>
                       
                       {/* Details Row */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', fontSize: '0.9rem', color: '#555' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', fontSize: '0.85rem', color: '#555' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <span style={{ color: '#cf9840' }}>📅</span>
                           比賽日 {comp.start_date ? comp.start_date : '依簡章公告'}
