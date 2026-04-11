@@ -146,12 +146,16 @@ export default async function Home() {
                       {/* Details Row */}
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', fontSize: '0.9rem', color: '#555' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <span style={{ color: '#c0392b' }}>📍</span>
-                          {comp.location ? comp.location : '依簡章公告'}
+                          <span style={{ color: '#cf9840' }}>📅</span>
+                          比賽日 {comp.start_date ? comp.start_date : '依簡章公告'}
                         </span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <span style={{ color: '#d35400' }}>⏰</span>
                           截止 {comp.deadline ? comp.deadline : '依簡章公告'}
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ color: '#c0392b' }}>📍</span>
+                          {comp.location ? comp.location : '依簡章公告'}
                         </span>
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <span style={{ color: '#34495e' }}>👥</span>
