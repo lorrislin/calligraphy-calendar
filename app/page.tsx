@@ -17,6 +17,8 @@ const mockData = [
     location: '新竹市文化局',
     deadline: '2026-04-30',
     fee: '免費',
+    url: '#',
+    age_group: '國小/國中',
     status: 'approved'
   },
   {
@@ -27,6 +29,8 @@ const mockData = [
     location: '桃園市立美術館',
     deadline: '2026-05-15',
     fee: 'NT$ 200',
+    url: '#',
+    age_group: '社會組',
     status: 'approved'
   }
 ];
@@ -74,14 +78,38 @@ export default async function Home() {
               cursor: 'pointer'
             }}
             >
-              <div>
-                <h3 style={{ fontSize: '1.4rem', marginBottom: '12px' }}>{comp.title}</h3>
-                <div style={{ display: 'flex', gap: '16px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                  <span>📍 {comp.location}</span>
-                  <span>📅 截止: {comp.deadline}</span>
+              <div style={{ flex: 1, paddingRight: '16px' }}>
+                <a href={comp.url || '#'} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'inline-block' }}>
+                  <h3 style={{ fontSize: '1.4rem', marginBottom: '14px' }}>
+                    {comp.title} <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>↗</span>
+                  </h3>
+                </a>
+                
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 24px', fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: 'var(--accent-gold)' }}>📅</span>
+                    比賽日：{comp.start_date ? comp.start_date : '依簡章公告'}
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: '#d35400' }}>⏰</span>
+                    收件截止：{comp.deadline ? comp.deadline : '依簡章公告'}
+                  </span>
+                  
+                  {/* 強制換行 */}
+                  <div style={{ flexBasis: '100%', height: 0 }}></div>
+
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: '#34495e' }}>📍</span>
+                    送件地點：{comp.location ? comp.location : '依簡章公告'}
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: '#16a085' }}>👥</span>
+                    對象層級：{comp.age_group ? comp.age_group : '詳見簡章'}
+                  </span>
                 </div>
               </div>
-              <div style={{ textAlign: 'right' }}>
+              
+              <div style={{ textAlign: 'right', minWidth: '90px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
                 <span style={{
                   display: 'inline-block',
                   padding: '6px 16px',
@@ -92,7 +120,7 @@ export default async function Home() {
                   fontWeight: '500',
                   letterSpacing: '0.05em'
                 }}>
-                  {comp.start_date}
+                  {comp.category === 'national' ? '全國賽' : comp.category === 'regional' ? '區域賽' : '一般展賽'}
                 </span>
               </div>
             </div>

@@ -10,6 +10,7 @@ CREATE TABLE competitions (
   fee TEXT,
   url TEXT,
   description TEXT,
+  age_group TEXT,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'declined')),
   approval_token TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
