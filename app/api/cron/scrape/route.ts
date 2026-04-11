@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
-import * as crypto from 'crypto';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -11,90 +10,128 @@ const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
 const supabase = createClient(supabaseUrl, supabaseKey);
 const resend = new Resend(resendApiKey);
 
+// 11 websites from the old index.html
+const TARGET_URLS = [
+  'https://dweb.cjcu.edu.tw/cpa/news',    // 長榮書畫系
+  'https://www.shufa.org.tw/news',        // 中華民國書學會
+  'https://web.arte.gov.tw/nsac/',        // 藝教館
+  'https://dadunfae.taichung.gov.tw/',    // 大墩美展
+  'https://art.hlc.edu.tw/lanting/',      // 蘭亭大會
+  'https://education.ylc.edu.tw/',        // 雲林教育網
+  'https://www.happynet.org.tw/',         // 金鴻獎
+  'https://salianbao.org.tw/',            // 沙連堡
+  'https://www.zgs.org.tw/',              // 慈光山
+  'https://www.bocach.gov.tw/',           // 彰化縣文化局
+  'https://nlc.moe.edu.tw/'               // 全國語文競賽
+];
+
 export async function GET(request: Request) {
   try {
-    // 1. 真實爬蟲邏輯 (Real Scrape Logic)
-    // 我們鎖定長榮大學書畫藝術學系佈告欄這類高公信力的官方網站
-    console.log('Fetching official calligraphy news...');
-    const response = await fetch('https://dweb.cjcu.edu.tw/cpa/news', {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch website. Status: ${response.status}`);
-    }
-
-    const html = await response.text();
+    console.log('Initiating multi-source calligraphy web scraping...');
     const cheerio = require('cheerio');
-    const $ = cheerio.load(html);
-
     const newCompetitions: any[] = [];
-    const baseUrl = 'https://dweb.cjcu.edu.tw';
     const currentYear = new Date().getFullYear();
 
-    // 啟動萬用探測器：抓出所有包含「書法」與「比賽」/「徵件」/「美展」的連結
-    $('a').each((_, element) => {
-      const text = $(element).text().trim();
-      const href = $(element).attr('href');
+    // 1. Concurrent Fetching (max 3 seconds per site to strictly avoid Vercel 10s timeout)
+    const fetchPromises = TARGET_URLS.map(async (targetUrl) => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500); // 3.5s timeout
 
-      if (text.includes('書法') && (text.includes('賽') || text.includes('展') || text.includes('徵件'))) {
-        if (href && !newCompetitions.some(c => c.title === text)) {
-          const fullUrl = href.startsWith('http') ? href : `${baseUrl}${href.startsWith('/') ? '' : '/'}${href}`;
-          
-          newCompetitions.push({
-            title: text,
-            category: 'national', // 預設為 national，可在前端自行修改
-            start_date: `${currentYear}-12-31`, // 需要手動由簡章確認，先給預設
-            location: '請參閱簡章',
-            deadline: `${currentYear}-12-31`,
-            fee: '詳見簡章',
-            url: fullUrl,
-            description: `爬蟲自動抓取自：長榮書畫學系佈告欄。請點擊連結查看詳細簡章與確切日期。`
-          });
-        }
+        const response = await fetch(targetUrl, {
+          signal: controller.signal,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36'
+          }
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) return null;
+        
+        const html = await response.text();
+        return { targetUrl, html };
+      } catch (err) {
+        // Silently skip if a site is dead or blocks us
+        return null;
       }
     });
 
-    // Assuming we found new data
-    for (const comp of newCompetitions) {
-      const approval_token = crypto.randomBytes(16).toString('hex');
+    // Wait for all websites to return (or timeout)
+    const results = await Promise.all(fetchPromises);
 
-      // 2. Insert into Supabase as pending
+    // 2. Parse HTML safely for all successful sites
+    for (const result of results) {
+      if (!result) continue;
+      
+      const { targetUrl, html } = result;
+      const $ = cheerio.load(html);
+      const urlObj = new URL(targetUrl);
+      const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
+
+      $('a').each((_, element) => {
+        const text = $(element).text().trim();
+        const href = $(element).attr('href');
+
+        // Heuristic filtering: Look for calligraphy events
+        if (text.includes('書法') && (text.includes('賽') || text.includes('展') || text.includes('徵件'))) {
+          // Deduplication: Avoid existing titles globally globally in this execution memory
+          if (href && !newCompetitions.some(c => c.title === text)) {
+            const fullUrl = href.startsWith('http') ? href : `${baseUrl}${href.startsWith('/') ? '' : '/'}${href}`;
+            
+            newCompetitions.push({
+              title: text,
+              category: 'national', // 預設類別
+              start_date: `${currentYear}-12-31`,
+              location: '請參閱簡章',
+              deadline: `${currentYear}-12-31`,
+              fee: '詳見簡章',
+              url: fullUrl,
+              description: `系統自動發現自：${targetUrl}。請點擊連結查看詳細簡章與確切日期。`
+            });
+          }
+        }
+      });
+    }
+
+    // 3. Write to Supabase & Send Email
+    for (const comp of newCompetitions) {
+      const approval_token = crypto.randomUUID();
+      
+      // Insert as pending
       const { data, error } = await supabase
         .from('competitions')
         .insert([{ ...comp, status: 'pending', approval_token }])
         .select()
         .single();
 
-      if (error) throw error;
-
-      // 3. Send Approval Email via Resend
-      if (data && resendApiKey) {
+      // Send Email if inserted successfully
+      if (!error && data && resendApiKey) {
         const approveUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/admin/action?id=${data.id}&token=${approval_token}&action=approve`;
         const declineUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/admin/action?id=${data.id}&token=${approval_token}&action=decline`;
 
         await resend.emails.send({
           from: 'Calligraphy Bot <onboarding@resend.dev>',
           to: adminEmail,
-          subject: `[需要審核] 新的書法比賽：${comp.title}`,
+          subject: `[需要審核] 書法發佈網路雷達：${comp.title}`,
           html: `
-            <h2>發現新的官方書法活動與比賽！</h2>
+            <h2>發現來自官方的書法比賽公告！</h2>
             <ul>
               <li><strong>名稱：</strong>${comp.title}</li>
-              <li><strong>原始公告：</strong><a href="${comp.url}">點我查看官方簡章</a></li>
-              <li><strong>備註：</strong>因為是程式自動讀取，確切的比賽日期與報名費請以官方簡章為準。</li>
+              <li><strong>來源公告：</strong><a href="${comp.url}">點我查看此網站簡章</a></li>
+              <li><strong>備註：</strong>此為多源並行爬蟲自動攔截，確切日期與報名費請以簡章為準。</li>
             </ul>
-            <p>請確認是否要在您的網站上發布：</p>
-            <a href="${approveUrl}" style="padding: 10px 20px; background: #C9A962; color: #fff; text-decoration: none; border-radius: 5px; margin-right: 10px;">核准發布 (Approve)</a>
-            <a href="${declineUrl}" style="padding: 10px 20px; background: #EAEAEA; color: #333; text-decoration: none; border-radius: 5px;">忽略 (Decline)</a>
+            <p>請確認是否要在您的行事曆上發布這則比賽：</p>
+            <a href="${approveUrl}" style="padding: 10px 20px; background: #C9A962; color: #fff; text-decoration: none; border-radius: 5px; margin-right: 10px;">核准並發布 (Approve)</a>
+            <a href="${declineUrl}" style="padding: 10px 20px; background: #EAEAEA; color: #333; text-decoration: none; border-radius: 5px;">無效/忽略 (Decline)</a>
           `
         });
       }
     }
 
-    return NextResponse.json({ success: true, message: 'Scrape completed and emails sent.' });
+    return NextResponse.json({ 
+      success: true, 
+      message: `Scrape completed across ${results.length} targets. Found ${newCompetitions.length} potential matches.` 
+    });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
