@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import React from 'react';
 
 export const dynamic = 'force-dynamic';
 
@@ -71,6 +72,25 @@ export default async function Home() {
      return { day: d.getDate(), weekday: `(${weekdays[d.getDay()]})` };
   };
 
+  const now = new Date();
+  now.setHours(0,0,0,0);
+  const todayMs = now.getTime();
+
+  const todayStr = new Intl.DateTimeFormat('zh-TW', {
+    year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Taipei'
+  }).format(new Date()).replace(/\//g, '-');
+
+  let firstFutureCompId: number | string | null = null;
+  for (const comp of competitions) {
+    if (comp.start_date) {
+      const d = new Date(comp.start_date).getTime();
+      if (d >= todayMs) {
+        firstFutureCompId = comp.id;
+        break;
+      }
+    }
+  }
+
   return (
     <div className="container" style={{ padding: '32px 24px' }}>
 
@@ -106,19 +126,42 @@ export default async function Home() {
                 const isNational = comp.category === 'national';
                 const isRegional = comp.category === 'regional';
                 const themeColor = isNational ? '#1a5b74' : isRegional ? '#d35400' : '#27ae60';
+                
+                const isPast = comp.start_date ? new Date(comp.start_date).getTime() < todayMs : false;
 
                 return (
-                  <div key={comp.id} className="competition-card" style={{
-                    background: '#fff',
-                    borderRadius: '8px',
-                    padding: '12px 20px',
-                    borderLeft: `5px solid ${themeColor}`,
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '20px',
-                  }}
-                  >
+                  <React.Fragment key={comp.id}>
+                    {comp.id === firstFutureCompId && (
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        margin: '12px 0', 
+                        color: '#c0392b', 
+                        fontWeight: 'bold',
+                        fontSize: '0.9rem' 
+                      }}>
+                        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #c0392b)' }}></div>
+                        <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span>⏳</span>
+                          <span style={{ letterSpacing: '0.05em' }}>今日 ({todayStr})</span>
+                          <span>⏳</span>
+                        </div>
+                        <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, #c0392b)' }}></div>
+                      </div>
+                    )}
+                    <div className="competition-card" style={{
+                      background: '#fff',
+                      borderRadius: '8px',
+                      padding: '12px 20px',
+                      borderLeft: `5px solid ${themeColor}`,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '20px',
+                      opacity: isPast ? 0.6 : 1,
+                      filter: isPast ? 'grayscale(100%)' : 'none',
+                    }}
+                    >
                     {/* Calendar Block */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '60px' }}>
                       <span style={{ fontSize: '1.7rem', fontWeight: 'bold', color: '#111', lineHeight: 1 }}>
@@ -179,6 +222,7 @@ export default async function Home() {
                       </div>
                     </div>
                   </div>
+                  </React.Fragment>
                 );
               })}
             </div>
