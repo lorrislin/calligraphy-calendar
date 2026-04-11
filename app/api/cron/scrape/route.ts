@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import * as cheerio from 'cheerio';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -28,7 +29,6 @@ const TARGET_URLS = [
 export async function GET(request: Request) {
   try {
     console.log('Initiating multi-source calligraphy web scraping...');
-    const cheerio = require('cheerio');
     const newCompetitions: any[] = [];
     const currentYear = new Date().getFullYear();
 
