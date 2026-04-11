@@ -50,6 +50,27 @@ export default async function Home() {
     }
   }
 
+  const groupedCompetitions: Record<string, any[]> = {};
+  competitions.forEach(comp => {
+    let yearMonth = '日期未定';
+    if (comp.start_date) {
+       const dateObj = new Date(comp.start_date);
+       if (!isNaN(dateObj.getTime())) {
+          yearMonth = `${dateObj.getFullYear()} 年 ${dateObj.getMonth() + 1} 月`;
+       }
+    }
+    if (!groupedCompetitions[yearMonth]) groupedCompetitions[yearMonth] = [];
+    groupedCompetitions[yearMonth].push(comp);
+  });
+
+  const getDayAndWeekday = (dateStr: string) => {
+     if (!dateStr) return { day: '--', weekday: '' };
+     const d = new Date(dateStr);
+     if (isNaN(d.getTime())) return { day: '--', weekday: '' };
+     const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+     return { day: d.getDate(), weekday: `(${weekdays[d.getDay()]})` };
+  };
+
   return (
     <div className="container" style={{ padding: '60px 24px' }}>
 
@@ -62,73 +83,93 @@ export default async function Home() {
       </div>
 
       {/* List Layout */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        {competitions.length === 0 ? (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+        {Object.keys(groupedCompetitions).length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>尚無可顯示的比賽</p>
         ) : (
-          competitions.map((comp) => (
-            <div key={comp.id} className="competition-card" style={{
-              background: 'var(--card-bg)',
-              borderRadius: '16px',
-              padding: '32px',
-              border: '1px solid var(--border-color)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              cursor: 'pointer'
-            }}
-            >
-              <div style={{ flex: 1, paddingRight: '16px' }}>
-                <h3 style={{ fontSize: '1.4rem', marginBottom: '14px', color: 'var(--text-primary)' }}>
-                  {comp.title}
-                </h3>
-                
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 24px', fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: 'var(--accent-gold)' }}>📅</span>
-                    比賽日：{comp.start_date ? comp.start_date : '依簡章公告'}
-                  </span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: '#d35400' }}>⏰</span>
-                    收件截止：{comp.deadline ? comp.deadline : '依簡章公告'}
-                  </span>
-                  
-                  {/* 強制換行 */}
-                  <div style={{ flexBasis: '100%', height: 0 }}></div>
+          Object.entries(groupedCompetitions).map(([monthYear, comps]) => (
+            <div key={monthYear} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <h2 style={{ 
+                fontSize: '1.2rem', 
+                color: '#333', 
+                borderLeft: '4px solid #333', 
+                paddingLeft: '12px', 
+                marginBottom: '8px' 
+              }}>
+                {monthYear}
+              </h2>
+              {comps.map((comp) => {
+                const { day, weekday } = getDayAndWeekday(comp.start_date);
+                return (
+                  <div key={comp.id} className="competition-card" style={{
+                    background: '#fff',
+                    borderRadius: '8px',
+                    padding: '16px 24px',
+                    borderLeft: '5px solid #1a5b74',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '24px',
+                  }}
+                  >
+                    {/* Calendar Block */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '60px' }}>
+                      <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#111', lineHeight: 1 }}>
+                        {day}
+                      </span>
+                      <span style={{ fontSize: '0.9rem', color: '#666', marginTop: '4px' }}>
+                        {weekday}
+                      </span>
+                    </div>
 
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: '#34495e' }}>📍</span>
-                    地點：{comp.location ? comp.location : '依簡章公告'}
-                  </span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: '#16a085' }}>👥</span>
-                    對象：{comp.age_group ? comp.age_group : '詳見簡章'}
-                  </span>
+                    {/* Content Block */}
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      {/* Title & Badge */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                        <h3 style={{ fontSize: '1.15rem', color: '#111', margin: 0, fontWeight: 600 }}>
+                          {comp.title}
+                        </h3>
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '4px 12px',
+                          borderRadius: '20px',
+                          background: '#1a5b74',
+                          color: '#fff',
+                          fontSize: '0.75rem',
+                          fontWeight: '500',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {comp.category === 'national' ? '全國賽' : comp.category === 'regional' ? '區域賽' : '一般展賽'}
+                        </span>
+                      </div>
+                      
+                      {/* Details Row */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', fontSize: '0.9rem', color: '#555' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ color: '#c0392b' }}>📍</span>
+                          {comp.location ? comp.location : '依簡章公告'}
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ color: '#d35400' }}>⏰</span>
+                          截止 {comp.deadline ? comp.deadline : '依簡章公告'}
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <span style={{ color: '#34495e' }}>👥</span>
+                          {comp.age_group ? comp.age_group : '詳見簡章'}
+                        </span>
 
-                  {comp.url && comp.url !== '#' && (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '8px' }}>
-                      <a href={comp.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0056b3', fontWeight: 'bold', textDecoration: 'underline' }}>
-                        🔗 官方連結
-                      </a>
-                    </span>
-                  )}
-                </div>
-              </div>
-              
-              <div style={{ textAlign: 'right', minWidth: '90px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
-                <span style={{
-                  display: 'inline-block',
-                  padding: '6px 16px',
-                  borderRadius: '20px',
-                  background: 'var(--bg-color)',
-                  color: 'var(--accent-gold)',
-                  fontSize: '0.8rem',
-                  fontWeight: '500',
-                  letterSpacing: '0.05em'
-                }}>
-                  {comp.category === 'national' ? '全國賽' : comp.category === 'regional' ? '區域賽' : '一般展賽'}
-                </span>
-              </div>
+                        {comp.url && comp.url !== '#' && (
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: 'auto' }}>
+                            <a href={comp.url} target="_blank" rel="noopener noreferrer" style={{ color: '#0056b3', fontWeight: 'bold', textDecoration: 'underline' }}>
+                              🔗 官方連結
+                            </a>
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           ))
         )}
