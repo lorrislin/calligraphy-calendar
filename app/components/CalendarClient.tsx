@@ -25,6 +25,21 @@ export default function CalendarClient({ initialCompetitions, todayStr, todayMs 
   const [showPastClearly, setShowPastClearly] = useState(false);
   const [sortBy, setSortBy] = useState<'event' | 'deadline'>('event');
 
+  const scrollToComp = (id: string | number) => {
+    // If we are sorting by event date, but they click a deadline link, switch to deadline view?
+    // Actually, both views contain all events (unless past events are faded). Let's just scroll.
+    const el = document.getElementById(`comp-${id}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Temporary highlight effect
+      const originalBg = el.style.backgroundColor;
+      el.style.backgroundColor = '#fff3cd';
+      setTimeout(() => {
+        el.style.backgroundColor = originalBg;
+      }, 1500);
+    }
+  };
+
   const getDayAndWeekday = (dateStr: string) => {
     if (!dateStr) return { day: '--', weekday: '' };
     const d = new Date(dateStr);
@@ -143,25 +158,39 @@ export default function CalendarClient({ initialCompetitions, todayStr, todayMs 
             {urgentCompetitions.map(comp => {
               const daysLeft = Math.ceil((new Date(comp.deadline).getTime() - todayMs) / (1000 * 60 * 60 * 24));
               return (
-                <div key={`urgent-${comp.id}`} style={{
-                  background: '#fff',
-                  border: '1px solid #ffdf7e',
-                  borderRadius: '20px',
-                  padding: '6px 14px',
-                  fontSize: '0.85rem',
-                  color: '#856404',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
-                }}>
+                <button 
+                  key={`urgent-${comp.id}`} 
+                  onClick={() => scrollToComp(comp.id)}
+                  style={{
+                    background: '#fff',
+                    border: '1px solid #ffdf7e',
+                    borderRadius: '20px',
+                    padding: '6px 14px',
+                    fontSize: '0.85rem',
+                    color: '#856404',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 3px 6px rgba(0,0,0,0.08)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.03)';
+                  }}
+                >
                   <strong style={{ maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {comp.title}
                   </strong>
                   <span style={{ background: '#dc3545', color: '#fff', padding: '1px 6px', borderRadius: '10px', fontSize: '0.75rem', fontWeight: 'bold' }}>
                     剩 {daysLeft} 天
                   </span>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -294,7 +323,7 @@ export default function CalendarClient({ initialCompetitions, todayStr, todayMs 
                         <div style={{ flex: 1, height: '1.5px', background: `linear-gradient(to left, transparent, ${highlightColor})` }}></div>
                       </div>
                     )}
-                    <div className="competition-card" style={{
+                    <div id={`comp-${comp.id}`} className="competition-card" style={{
                       background: '#fff',
                       borderRadius: '8px',
                       padding: '14px 18px',
