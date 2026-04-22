@@ -328,13 +328,11 @@ export default function CalendarClient({ initialCompetitions, todayStr, todayMs 
                       borderRadius: '8px',
                       padding: '14px 18px',
                       borderLeft: `5px solid ${themeColor}`,
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '18px',
                       opacity: displayOpacity,
                       filter: displayFilter,
-                      transition: 'all 0.4s ease' // Smooth transition for toggle
                     }}
                     >
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '55px' }}>
