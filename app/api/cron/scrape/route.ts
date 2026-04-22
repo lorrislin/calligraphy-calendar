@@ -96,9 +96,9 @@ export async function GET(request: Request) {
             newCompetitions.push({
               title: text,
               category: 'national', // 預設類別
-              start_date: `${currentYear}-12-31`,
+              start_date: null,
               location: '請參閱簡章',
-              deadline: `${currentYear}-12-31`,
+              deadline: null,
               fee: '詳見簡章',
               url: fullUrl,
               description: `系統自動發現自：${targetUrl}。請點擊連結查看詳細簡章與確切日期。`
